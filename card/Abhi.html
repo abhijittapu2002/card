@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy 24th Birthday KHUSBU! 💖</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Birthstone+Bounce&family=Pacifico&display=swap');
+
+        :root {
+            --primary-color: #ff6b6b;
+            --secondary-color: #4ecdc4;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            perspective: 1000px;
+            overflow-x: hidden;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1, #96f2d7);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            font-family: 'Pacifico', cursive;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .particle {
+            position: fixed;
+            pointer-events: none;
+            background: rgba(255,255,255,0.7);
+            border-radius: 50%;
+        }
+
+        .birthday-text {
+            font-family: 'Birthstone Bounce', cursive;
+            text-shadow: 3px 3px 0 rgba(0,0,0,0.1);
+        }
+
+        .card-container {
+            transform-style: preserve-3d;
+            transition: transform 1s;
+            cursor: pointer;
+        }
+
+        .card-container:hover {
+            transform: rotateY(180deg) rotateX(20deg) scale(1.1);
+        }
+
+        .card-front, .card-back {
+            backface-visibility: hidden;
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+
+        .card-back {
+            transform: rotateY(180deg);
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        @keyframes spin {
+            100% { transform: rotateY(360deg); }
+        }
+
+        @keyframes hearts {
+            0% { transform: translateY(0) rotate(45deg); opacity: 1; }
+            100% { transform: translateY(-1000px) rotate(45deg); opacity: 0; }
+        }
+
+        .animation-spin { animation: spin 2s linear infinite; }
+        .animation-float { animation: float 3s ease-in-out infinite; }
+        .animation-shake { animation: shake 0.5s ease-in-out infinite; }
+        .animation-heartbeat { animation: heartbeat 1.5s infinite; }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(10px); }
+            75% { transform: translateX(-10px); }
+        }
+
+        @keyframes heartbeat {
+            0% { transform: scale(1); }
+            14% { transform: scale(1.3); }
+            28% { transform: scale(1); }
+            42% { transform: scale(1.3); }
+            70% { transform: scale(1); }
+        }
+
+        .message-container {
+            transform: translateZ(50px);
+            perspective: 1000px;
+        }
+
+        .custom-card {
+            height: 400px;
+            border: none;
+            overflow: hidden;
+        }
+
+        .custom-card img {
+            height: 320px;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+
+        .love-quote {
+            font-size: 1.2rem;
+            color: white;
+            text-align: center;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .pearl {
+            position: fixed;
+            pointer-events: none;
+            border-radius: 50%;
+            animation: pearlFall linear forwards;
+        }
+
+        @keyframes pearlFall {
+            to {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body class="relative">
+    <div id="particles"></div>
+    <div id="hearts"></div>
+
+    <div class="container py-5">
+        <h1 class="text-center text-white birthday-text display-1 mb-5 animation-float animation-heartbeat">
+            Happy 24th Birthday ABHIJIT! 🎉💐
+        </h1>
+
+        <div class="row g-4 mb-5" id="animationButtons">
+            <div class="col-md-2">
+                <button class="btn btn-danger w-100 py-3" onclick="applyAnimation('spin')">Spin 💫</button>
+            </div>
+            <div class="col-md-2">
+                <button class="btn btn-warning w-100 py-3" onclick="applyAnimation('float')">Float 🌟</button>
+            </div>
+            <div class="col-md-2">
+                <button class="btn btn-success w-100 py-3" onclick="applyAnimation('shake')">Shake 🎊</button>
+            </div>
+            <div class="col-md-3">
+                <button class="btn btn-info w-100 py-3" onclick="createHearts()">Love 💖</button>
+            </div>
+            <div class="col-md-3">
+                <button class="btn btn-light w-100 py-3" onclick="throwPearls()">Celebrate 🎉</button>
+            </div>
+        </div>
+
+        <div class="row g-4" id="cardGrid"></div>
+
+        <div class="message-container mt-5 p-5 bg-white rounded-lg shadow-lg text-center">
+            <h2 class="birthday-text text-3xl mb-4">From Abhijit with Love 💌</h2>
+            <p class="lead">To my dearest ABHIJIT,<br>
+            On your special day, I want you to know you're the most amazing person in my life.<br>
+            Happy 24th Birthday my love! May all your dreams come true! 🎂💖<br>
+            - Forever Yours, Abhijit</p>
+        </div>
+    </div>
+
+    <script>
+        const loveQuotes = [
+            "You are my today and all of my tomorrows 💖",
+            "I love you not for what you are, but for what I am when I'm with you 🌸",
+            "Every moment with you is a treasure I'll always cherish 💎",
+            "Your smile is my favorite sight in the world 😊",
+            "In your arms is where I belong 🤗",
+            "You make my heart skip a beat every single day 💓",
+            "My love for you grows stronger with each passing moment 🌹",
+            "You're the missing piece to my puzzle 🧩",
+            "With you, every day feels like a fairytale 🏰",
+            "Your love is the best thing that ever happened to me 💞",
+            "I fall in love with you more every day 💫",
+            "You're my sunshine on the darkest days ☀️",
+            "My heart beats only for you 💘",
+            "You're my perfect forever ⏳",
+            "I love you to the moon and back 🌙"
+        ];
+
+        const imagePaths = Array.from({length: 15}, (_, i) => `images/image${i+1}.jpg`);
+
+        function createParticles() {
+            const particles = document.getElementById('particles');
+            for (let i = 0; i < 100; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                Object.assign(particle.style, {
+                    width: Math.random() * 15 + 'px',
+                    height: Math.random() * 15 + 'px',
+                    left: Math.random() * 100 + '%',
+                    top: Math.random() * 100 + '%',
+                    animation: `float ${Math.random() * 10 + 5}s infinite`
+                });
+                particles.appendChild(particle);
+            }
+        }
+
+        function generateCards() {
+            const cardGrid = document.getElementById('cardGrid');
+            imagePaths.forEach((img, index) => {
+                const card = document.createElement('div');
+                card.className = 'col-md-4 mb-4';
+                card.innerHTML = `
+                    <div class="card-container custom-card">
+                        <div class="card-front bg-white rounded-lg shadow-lg p-4">
+                            <img src="${img}" class="w-full rounded-lg" alt="Our Memory ${index + 1}">
+                            <h3 class="text-center mt-3">Our Memory ${index + 1}</h3>
+                        </div>
+                        <div class="card-back rounded-lg p-4">
+                            <p class="love-quote">${loveQuotes[index]}</p>
+                        </div>
+                    </div>
+                `;
+                cardGrid.appendChild(card);
+            });
+        }
+
+        function applyAnimation(animationType) {
+            const cards = document.querySelectorAll('.card-container');
+            cards.forEach(card => {
+                card.style.animation = '';
+                card.classList.add(`animation-${animationType}`);
+            });
+        }
+
+        function createHearts() {
+            const heartsContainer = document.getElementById('hearts');
+            for(let i = 0; i < 50; i++) {
+                const heart = document.createElement('div');
+                heart.innerHTML = '💖';
+                heart.style.cssText = `
+                    position: fixed;
+                    left: ${Math.random() * 100}%;
+                    top: ${Math.random() * 100}%;
+                    font-size: ${Math.random() * 30 + 20}px;
+                    animation: hearts ${Math.random() * 3 + 2}s linear;
+                    z-index: 999;
+                `;
+                heartsContainer.appendChild(heart);
+                setTimeout(() => heart.remove(), 2000);
+            }
+        }
+
+        function throwPearls() {
+            for(let i = 0; i < 100; i++) {
+                const pearl = document.createElement('div');
+                pearl.className = 'pearl';
+                const size = Math.random() * 15 + 5;
+                const color = `hsl(${Math.random() * 360}, 70%, 50%)`;
+                
+                Object.assign(pearl.style, {
+                    left: `${Math.random() * 100}%`,
+                    top: '-50px',
+                    width: `${size}px`,
+                    height: `${size}px`,
+                    background: color,
+                    animation: `pearlFall ${Math.random() * 3 + 2}s linear`,
+                    boxShadow: `0 0 10px ${color}`
+                });
+
+                document.body.appendChild(pearl);
+                setTimeout(() => pearl.remove(), 2000);
+            }
+        }
+
+        window.onload = () => {
+            createParticles();
+            generateCards();
+            
+            document.addEventListener('mousemove', (e) => {
+                const cards = document.querySelectorAll('.card-container');
+                const xAxis = (window.innerWidth / 2 - e.pageX) / 25;
+                const yAxis = (window.innerHeight / 2 - e.pageY) / 25;
+                
+                cards.forEach(card => {
+                    card.style.transform = `rotateY(${xAxis}deg) rotateX(${yAxis}deg)`;
+                });
+            });
+        }
+    </script>
+</body>
+</html>
